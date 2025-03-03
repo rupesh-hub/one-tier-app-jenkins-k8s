@@ -48,7 +48,7 @@ pipeline {
                     sh '''
                         cd backend
                         # Run the SonarQube scanner
-                        sonar-scanner \
+                        sonar \
                             -Dsonar.projectKey=one-tier-app \
                             -Dsonar.sources=.  \
                             -Dsonar.host.url=${SONAR_URL} \
