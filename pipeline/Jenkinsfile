@@ -86,7 +86,7 @@ pipeline {
             }
 
             steps {
-                withCredentials([string(credentialsId: env.DOCKERHUB_CREDENTIALS, variable: 'GITHUB_TOKEN')]) {
+                withCredentials([string(credentialsId: env.GITHUB_TOKEN, variable: 'GITHUB_TOKEN')]) {
                     sh '''
                         git config user.email "dulalrupesh77@gmail.com"
                         git config user.name "Rupesh Dulal"
