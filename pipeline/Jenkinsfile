@@ -46,7 +46,7 @@ pipeline {
                         $SONAR_HOME/bin/sonar-scanner \
                         -Dsonar.projectName=one-tier-app \
                         -Dsonar.projectKey=one-tier-app \
-                        -Dsonar.java.binaries=target/classes
+                        -Dsonar.exclusions=**/*.java
                     '''
                 }
             }
