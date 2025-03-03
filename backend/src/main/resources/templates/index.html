@@ -1,48 +1,74 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fancy One-Tier Application</title>
+    <style type="text/css">
+        /* Custom styles for the one-tier application */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-<style type="text/css">
-    /* Custom styles for the one-tier application */
-    body {
-        background-color: #f5f5f5;
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 auto;
-        min-height: 100vh;
-        min-width: 100vw;
-    }
+        div {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            width: 450px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    div {
-        background: #fce9e9;
-        padding: 20px;
-        border-radius: 5px;
-        margin-bottom: 20px;
-        width: 400px;
-        text-align: center;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s;
-        animation: fade-in 1s ease-in-out infinite;
-    }
+        div:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
 
-    h1 {
-        text-align: center;
-        color: gray;
-    }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
 
-    p {
-        margin-top: 20px;
-        color: lightgray;
-    }
+        p {
+            margin-top: 20px;
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
 
-</style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        div {
+            animation: fadeIn 1s ease-in-out;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
 <body>
-    <div>
-        <h1>Welcome to the One-Tier Application</h1>
-        <p>This is a simple one-tier application.</p>
-    </div>
-
+<div>
+    <h1>Welcome to the One-Tier Application</h1>
+    <p>This is a simple one-tier application with a modern and fancy design.</p>
+</div>
 </body>
 </html>
