@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: one-tier-app
+
+server:
+  port: 8181
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type: trace

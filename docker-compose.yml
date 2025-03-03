@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  one-tier-app:
+    container_name: one-tier-app
+    image: rupesh1997/one-tier-app:1.0.0
+    ports:
+      - "8181:8181"
+    networks:
+      - devops
+    restart: always
+    healthcheck:
+      test: ["CMD", 'curl', "-f", "http://localhost:8181/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+networks:
+  devops:
+    driver: bridge
