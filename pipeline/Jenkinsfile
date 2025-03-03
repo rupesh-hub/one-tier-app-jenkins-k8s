@@ -19,9 +19,7 @@ pipeline {
                 git branch: 'main', credentialsId: env.GIT_CREDENTIALS, url: env.GIT_URL
             }
         }
-    }
 
-    stages {
         stage('Build code') {
             steps {
                 sh '''
