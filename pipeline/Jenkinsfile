@@ -38,6 +38,26 @@ pipeline {
             }
         }
 
+        stage('Static code analysis') {
+            environment {
+                SONAR_URL = "http://51.120.245.106:9000"
+            }
+
+            steps {
+                withCredentials([string(credentialsId: 'SonarToken', variable: 'SONAR_AUTH_TOKEN')]) {
+                    sh '''
+                        cd backend
+                        # Run the SonarQube scanner
+                        sonar-scanner \
+                            -Dsonar.projectKey=one-tier-app \
+                            -Dsonar.sources=.  \
+                            -Dsonar.host.url=${SONAR_URL} \
+                            -Dsonar.login=${SONAR_AUTH_TOKEN}
+                    '''
+                }
+            }
+        }
+
         stage('Prepare docker image') {
             steps {
                 sh '''
