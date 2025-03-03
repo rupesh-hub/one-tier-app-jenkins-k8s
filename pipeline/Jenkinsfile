@@ -8,7 +8,7 @@ pipeline {
     environment {
         GIT_CREDENTIALS = 'GitHub'
         IMAGE_NAME = 'rupesh1997/one-tier-app'
-        IMAGE_TAG = '1.0.0'
+        IMAGE_TAG = ${BUILD_NUMBER}
         DOCKERHUB_CREDENTIALS = 'DockerHub'
         GIT_URL = 'https://github.com/rupesh-hub/one-tier-app-jenkins-k8s.git'
         SONAR_HOME = tool "sonar"
@@ -72,11 +72,32 @@ pipeline {
             }
         }
 
-        stage('Run with Docker Compose') {
+//         stage('Run with Docker Compose') {
+//             steps {
+//                 sh 'docker-compose down || true'  // Stop existing containers if running
+//                 sh 'docker-compose pull'          // Ensure the latest image is pulled
+//                 sh 'docker-compose up -d'         // Run the app in detached mode
+//             }
+//         }
+
+        stage('Update Deployment File') {
+            environment {
+                        GIT_REPO_NAME = "one-tier-app-jenkins-k8s"
+                        GIT_USER_NAME = "rupesh77"
+            }
+
             steps {
-                sh 'docker-compose down || true'  // Stop existing containers if running
-                sh 'docker-compose pull'          // Ensure the latest image is pulled
-                sh 'docker-compose up -d'         // Run the app in detached mode
+                withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                    sh '''
+                        git config user.email "dulalrupesh77@gmail.com"
+                        git config user.name "Rupesh Dulal"
+                        BUILD_NUMBER=${BUILD_NUMBER}
+                        sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment/backend-deployment.yml
+                        git add deployment/backend-deployment.yml
+                        git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                        git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                    '''
+                }
             }
         }
     }
