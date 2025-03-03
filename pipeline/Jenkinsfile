@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    tools {
+        maven "maven3"
+    }
+
+    environment {
+        GIT_CREDENTIALS = 'GitHub'
+        IMAGE_NAME = 'rupesh1997/one-tier-app'
+        IMAGE_TAG = '1.0.0'
+        DOCKERHUB_CREDENTIALS = 'DockerHub'
+        GIT_URL = 'https://github.com/rupesh-hub/one-tier-app-jenkins-k8s.git'
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', credentialsId: env.GIT_CREDENTIALS, url: env.GIT_URL
+            }
+        }
+    }
+}
