@@ -81,8 +81,8 @@ pipeline {
 
         stage('Update Deployment File') {
             environment {
-                        GIT_REPO_NAME = "one-tier-app-jenkins-k8s"
-                        GIT_USER_NAME = "rupesh77"
+                GIT_REPO_NAME = "one-tier-app-jenkins-k8s"
+                GIT_USER_NAME = "rupesh77"
             }
 
             steps {
