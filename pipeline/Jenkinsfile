@@ -52,7 +52,7 @@ pipeline {
             }
         }
 
-        stage('Prepare docker image') {
+        stage('Prepare Docker Image') {
             steps {
                 sh '''
                     cd backend
@@ -61,7 +61,7 @@ pipeline {
             }
         }
 
-        stage('Push image to dockerhub') {
+        stage('Push Image to DockerHub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh '''
@@ -70,6 +70,24 @@ pipeline {
                     '''
                 }
             }
+        }
+
+        stage('Run with Docker Compose') {
+            steps {
+                sh 'docker-compose down || true'  // Stop existing containers if running
+                sh 'docker-compose pull'          // Ensure the latest image is pulled
+                sh 'docker-compose up -d'         // Run the app in detached mode
+            }
+        }
+    }
+
+    // Post-build actions
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Check the logs for details.'
         }
     }
 }
