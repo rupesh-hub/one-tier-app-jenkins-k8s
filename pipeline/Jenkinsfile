@@ -14,18 +14,47 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
                 git branch: 'main', credentialsId: env.GIT_CREDENTIALS, url: env.GIT_URL
             }
         }
 
-        stage('Build code') {
+        stage('Build') {
             steps {
                 sh '''
                     cd backend
                     mvn clean package -DskipTests
                 '''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh '''
+                    cd backend
+                    mvn clean test
+                '''
+            }
+        }
+
+        stage('Prepare docker image') {
+            steps {
+                sh '''
+                    cd backend
+                    docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -f ../docker/backend/Dockerfile .
+                '''
+            }
+        }
+
+        stage('Push image to dockerhub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        docker push ${IMAGE_NAME}:${IMAGE_TAG}
+                    '''
+                }
             }
         }
     }
