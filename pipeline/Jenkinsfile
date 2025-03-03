@@ -11,6 +11,7 @@ pipeline {
         IMAGE_TAG = '1.0.0'
         DOCKERHUB_CREDENTIALS = 'DockerHub'
         GIT_URL = 'https://github.com/rupesh-hub/one-tier-app-jenkins-k8s.git'
+        SONAR_HOME = tool "sonar"
     }
 
     stages {
@@ -44,16 +45,21 @@ pipeline {
             }
 
             steps {
-                withCredentials([string(credentialsId: 'SonarToken', variable: 'SONAR_AUTH_TOKEN')]) {
+//                 withCredentials([string(credentialsId: 'SonarToken', variable: 'SONAR_AUTH_TOKEN')]) {
+//                     sh '''
+//                         cd backend
+//                         # Run the SonarQube scanner
+//                         sonar-scanner \
+//                             -Dsonar.projectKey=one-tier-app \
+//                             -Dsonar.sources=.  \
+//                             -Dsonar.host.url=${SONAR_URL} \
+//                             -Dsonar.login=${SONAR_AUTH_TOKEN}
+//                     '''
+//                 }
+                withSonarQubeEnv("sonar") {
                     sh '''
-                        cd backend
-                        # Run the SonarQube scanner
-                        sonar-scanner \
-                            -Dsonar.projectKey=one-tier-app \
-                            -Dsonar.sources=.  \
-                            -Dsonar.host.url=${SONAR_URL} \
-                            -Dsonar.login=${SONAR_AUTH_TOKEN}
-                    '''
+                        $SONAR_HOME/bin/sonar-scanner -Dsonar.projectName=one-tier-app -Dsonar.projectKey=one-tier-app
+                       '''
                 }
             }
         }
