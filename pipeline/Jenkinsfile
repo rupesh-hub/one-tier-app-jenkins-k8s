@@ -8,7 +8,6 @@ pipeline {
     environment {
         GIT_CREDENTIALS = 'GitHub'
         IMAGE_NAME = 'rupesh1997/one-tier-app'
-        IMAGE_TAG = ${BUILD_NUMBER}
         DOCKERHUB_CREDENTIALS = 'DockerHub'
         GIT_URL = 'https://github.com/rupesh-hub/one-tier-app-jenkins-k8s.git'
         SONAR_HOME = tool "sonar"
@@ -56,7 +55,7 @@ pipeline {
             steps {
                 sh '''
                     cd backend
-                    docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -f ../docker/backend/Dockerfile .
+                    docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} -f ../docker/backend/Dockerfile .
                 '''
             }
         }
@@ -66,7 +65,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh '''
                         echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                        docker push ${IMAGE_NAME}:${IMAGE_TAG}
+                        docker push ${IMAGE_NAME}:${BUILD_NUMBER}
                     '''
                 }
             }
